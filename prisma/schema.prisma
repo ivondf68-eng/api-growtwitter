@@ -12,3 +12,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  idUser String @id @default(uuid()) @map("id_user")
+  nome   String @db.VarChar(120)
+  email  String @unique
+  senha  String
+  img    String
+
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+
+  @@map("user")
+}
+
+model Tweet {
+  idTweet  String  @id @default(uuid()) @map("id_tweet")
+  mensagem String  @db.VarChar(350)
+  like     Boolean @default(false)
+
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+
+  idRetweet String? @map("id_retweet")
+
+  tweetOriginal Tweet? @relation("Retweets", fields: [idRetweet], references: [idTweet])
+
+  retweets Tweet[] @relation("Retweets")
+
+  @@map("tweet")
+}
