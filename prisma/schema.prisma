@@ -15,30 +15,49 @@ datasource db {
 
 model User {
   idUser String @id @default(uuid()) @map("id_user")
-  nome   String @db.VarChar(120)
-  email  String @unique
-  senha  String
-  img    String
+  nome String @db.VarChar(120)
+  email String @unique
+  senha String 
+  img String
 
-  dtCriacao     DateTime @default(now()) @map("dt_criacao")
-  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+  dtCriacao DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @map("dt_atualizacao") @updatedAt
+
+  tweets Tweet[]
+  retweets Retweet[]
 
   @@map("user")
 }
 
 model Tweet {
-  idTweet  String  @id @default(uuid()) @map("id_tweet")
-  mensagem String  @db.VarChar(350)
-  like     Boolean @default(false)
+  idTweet String @id @default(uuid()) @map("id_tweet")
+  mensagem String @db.VarChar(350)
+  like Boolean @default(false)
 
-  dtCriacao     DateTime @default(now()) @map("dt_criacao")
-  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+  dtCriacao DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @map("dt_atualizacao") @updatedAt
 
-  idRetweet String? @map("id_retweet")
+  idUser String @map("id_user")
+  user User @relation(fields: [idUser], references: [idUser])
 
-  tweetOriginal Tweet? @relation("Retweets", fields: [idRetweet], references: [idTweet])
-
-  retweets Tweet[] @relation("Retweets")
+  retweets Retweet[]
 
   @@map("tweet")
+}
+
+model Retweet {
+  idRetweet String @id @default(uuid()) @map("id_retweet")
+  mensagem String @db.VarChar(350)
+  like Boolean @default(false)
+
+  dtCriacao DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @map("dt_atualizacao") @updatedAt
+
+  idUser String @map("id_user")
+  user User @relation(fields: [idUser], references: [idUser])
+
+  idTweet String @map("id_tweet")
+  tweet Tweet @relation(fields: [idTweet], references: [idTweet])
+
+  @@map("retweet")
 }
