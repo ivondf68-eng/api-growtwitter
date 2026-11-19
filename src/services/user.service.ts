@@ -20,6 +20,26 @@ class UserService{
             data: newUser
         }
     }
+
+    public async list(){
+        const users = await repository.listUsers();
+
+        return{
+            code: 200,
+            message: "Usuários listados com sucesso",
+            data: users
+        }
+    }
+
+    public async findById(idUser: string){
+        const user = await repository.findUserById(idUser);
+
+        return{
+            code: 200,
+            message: "Usuário encontrado",
+            data: user
+        }
+    }
 }
 
 export const userService = new UserService();
