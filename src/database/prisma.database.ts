@@ -38,6 +38,14 @@ class GrowTwitterRepository {
         })
     }
 
+    public async findUserByEmail(email: string){
+        return await prisma.user.findUnique({
+            where: {
+                email
+            }
+        });
+    }
+
 }
 
-export default new GrowTwitterRepository();
+export const repository = new GrowTwitterRepository();
