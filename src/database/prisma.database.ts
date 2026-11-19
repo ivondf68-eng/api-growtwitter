@@ -1,6 +1,6 @@
 
 import { prisma } from "../config/prisma.config";
-import { CreateUserDTO } from "../dtos/user.dto";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 
 class GrowTwitterRepository {
     public async createUser(data: CreateUserDTO){
@@ -20,7 +20,24 @@ class GrowTwitterRepository {
             }
         });
     }
-    
+
+    public async updateUser(idUser: string, data: UpdateUserDTO){
+        return await prisma.user.update({
+            where: {
+                idUser
+            },
+            data
+        })
+    }
+
+    public async deleteUser(idUser: string){
+        return await prisma.user.delete({
+            where: {
+                idUser
+            }
+        })
+    }
+
 }
 
 export default new GrowTwitterRepository();
