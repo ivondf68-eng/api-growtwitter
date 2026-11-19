@@ -5,7 +5,7 @@ class UserService{
     public async create(data: CreateUserDTO){
         const user = await repository.findUserByEmail(data.email);
 
-        if(!user){
+        if(user){
             return{
                 code: 400,
                 message: "O e-mail já está cadastrado"
