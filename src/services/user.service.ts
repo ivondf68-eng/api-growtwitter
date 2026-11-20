@@ -1,5 +1,5 @@
 import { repository } from "../database/prisma.database";
-import { CreateUserDTO } from "../dtos/user.dto";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 
 class UserService{
     public async create(data: CreateUserDTO){
@@ -38,6 +38,44 @@ class UserService{
             code: 200,
             message: "Usuário encontrado",
             data: user
+        }
+    }
+
+    public async updateUser(idUser: string, data: UpdateUserDTO){
+        const user = await repository.findUserById(idUser);
+
+        if(!user){
+            return {
+                code: 404,
+                message: "Usuário não encontrado"
+            }
+        }
+
+        const updatedUser = await repository.updateUser(idUser, data);
+
+        return {
+            code: 200,
+            message: "Usuário atualizado com sucesso",
+            data: updatedUser
+        }
+    }
+
+    public async deleteUser(idUser: string){
+        const user = await repository.deleteUser(idUser);
+
+        if(!user){
+            return {
+                code: 404,
+                message: "Usuário não encontrado"
+            }
+        }
+
+        const deletedUser = await repository.deleteUser(idUser);
+
+        return {
+            code: 200,
+            message: "Usuário deletado com sucesso",
+            data: deletedUser
         }
     }
 }
