@@ -45,4 +45,28 @@ export class UserController {
             return handleError(error, res);
         }
     } 
+
+    public async update(req: Request<{ idUser: string }>, res: Response){
+        try {
+            const { idUser } = req.params;
+
+            const result = await userService.updateUser(idUser, req.body);
+
+            return res.status(result.code).send(result);
+        } catch(error: any){
+            return handleError(error, res);
+        }
+    }
+
+    public async delete(req: Request<{ idUser: string }>, res: Response){
+        try {
+            const { idUser } = req.params;
+
+            const result = await userService.deleteUser(idUser);
+
+            return res.status(result.code).send(result);
+        } catch(error: any){
+            return handleError(error, res);
+        }
+    }
 }
