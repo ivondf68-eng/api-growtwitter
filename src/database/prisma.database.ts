@@ -1,6 +1,6 @@
 
 import { prisma } from "../config/prisma.config";
-import { CreateTweetDTO } from "../dtos/tweet.dto";
+import { CreateTweetDTO, UpdateTweetDTO } from "../dtos/tweet.dto";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 
 class GrowTwitterRepository {
@@ -59,6 +59,23 @@ class GrowTwitterRepository {
 
     public async findTweetById(idTweet: string) {
         return await prisma.tweet.findUnique({
+            where: {
+                idTweet
+            }
+        });
+    }
+
+    public async updateTweet(idTweet: string, data: UpdateTweetDTO) {
+        return await prisma.tweet.update({
+            where: {
+                idTweet
+            },
+            data
+        });
+    }
+
+    public async deleteTweet(idTweet: string) {
+        return await prisma.tweet.delete({
             where: {
                 idTweet
             }
