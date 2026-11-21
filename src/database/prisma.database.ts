@@ -53,6 +53,18 @@ class GrowTwitterRepository {
         });
     }
 
+    public async listTweets() {
+        return await prisma.tweet.findMany();
+    }
+
+    public async findTweetById(idTweet: string) {
+        return await prisma.tweet.findUnique({
+            where: {
+                idTweet
+            }
+        });
+    }
+
 }
 
 export const repository = new GrowTwitterRepository();
