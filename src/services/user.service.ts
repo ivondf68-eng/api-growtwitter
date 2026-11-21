@@ -75,7 +75,7 @@ class UserService{
     }
 
     public async deleteUser(idUser: string){
-        const user = await repository.deleteUser(idUser);
+        const user = await repository.findUserById(idUser);
 
         if(!user){
             return {
