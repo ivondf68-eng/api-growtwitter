@@ -34,6 +34,13 @@ class UserService{
     public async findById(idUser: string){
         const user = await repository.findUserById(idUser);
 
+        if(!user){
+            return {
+                code: 404,
+                message: "Usuário não existe"
+            }
+        }
+
         return{
             code: 200,
             message: "Usuário encontrado",
