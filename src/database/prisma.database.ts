@@ -1,5 +1,6 @@
 
 import { prisma } from "../config/prisma.config";
+import { CreateTweetDTO } from "../dtos/tweet.dto";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 
 class GrowTwitterRepository {
@@ -43,6 +44,12 @@ class GrowTwitterRepository {
             where: {
                 email
             }
+        });
+    }
+
+    public async createTweet(data: CreateTweetDTO) {
+        return await prisma.tweet.create({
+            data
         });
     }
 
