@@ -24,6 +24,13 @@ class UserService{
     public async list(){
         const users = await repository.listUsers();
 
+        if(!users.length){
+            return {
+                code: 200,
+                message: "Nenhum usuário cadastrado"
+            }
+        }
+
         return{
             code: 200,
             message: "Usuários listados com sucesso",
