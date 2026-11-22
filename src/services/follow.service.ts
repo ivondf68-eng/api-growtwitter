@@ -1,5 +1,5 @@
 import { repository } from "../database/prisma.database";
-import { CreateFollowDTO } from "../dtos/follow.dto";
+import { ChaveCompostaFollowDTO, CreateFollowDTO } from "../dtos/follow.dto";
 
 
 class FollowService {
@@ -46,4 +46,34 @@ class FollowService {
             data: follow
         }
     }
+
+    public async delete(data: ChaveCompostaFollowDTO) {
+        const seguidor = await repository.findUserById(data.idSeguidor);
+
+        if (!seguidor) {
+            return { 
+                code: 404, 
+                message: "Seguidor não encontrado." 
+            };
+        }
+
+        const seguido = await repository.findUserById(data.idSeguido);
+
+        if (!seguido) {
+            return { 
+                code: 404, 
+                message: "Usuário seguido não encontrado." 
+            };
+        }
+
+        const follow = await repository.deleteFollow(data);
+
+        return {
+            code: 200,
+            message: "Você deixou de seguir este usuário.",
+            data: follow
+        };
+    }
 }
+
+export const followService = new FollowService();
