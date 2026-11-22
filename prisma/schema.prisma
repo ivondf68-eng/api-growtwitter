@@ -15,49 +15,80 @@ datasource db {
 
 model User {
   idUser String @id @default(uuid()) @map("id_user")
-  nome String @db.VarChar(120)
-  email String @unique
-  senha String 
-  img String
+  nome   String @db.VarChar(120)
+  email  String @unique
+  senha  String
+  img    String
 
-  dtCriacao DateTime @default(now()) @map("dt_criacao")
-  dtAtualizacao DateTime @map("dt_atualizacao") @updatedAt
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
 
-  tweets Tweet[]
+  tweets   Tweet[]
+  likes    Like[]
   retweets Retweet[]
+
+  following Follow[] @relation("Following")
+  followers Follow[] @relation("Followers")
 
   @@map("user")
 }
 
 model Tweet {
-  idTweet String @id @default(uuid()) @map("id_tweet")
+  idTweet  String @id @default(uuid()) @map("id_tweet")
   mensagem String @db.VarChar(350)
-  like Boolean @default(false)
 
-  dtCriacao DateTime @default(now()) @map("dt_criacao")
-  dtAtualizacao DateTime @map("dt_atualizacao") @updatedAt
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
 
   idUser String @map("id_user")
-  user User @relation(fields: [idUser], references: [idUser])
+  user   User   @relation(fields: [idUser], references: [idUser])
 
+  idTweetPai String? @map("id_tweet_pai")
+  tweet      Tweet?  @relation("TweetReplies", fields: [idTweetPai], references: [idTweet])
+  replies    Tweet[] @relation("TweetReplies")
+
+  likes    Like[]
   retweets Retweet[]
 
   @@map("tweet")
 }
 
-model Retweet {
-  idRetweet String @id @default(uuid()) @map("id_retweet")
-  mensagem String @db.VarChar(350)
-  like Boolean @default(false)
-
-  dtCriacao DateTime @default(now()) @map("dt_criacao")
-  dtAtualizacao DateTime @map("dt_atualizacao") @updatedAt
-
-  idUser String @map("id_user")
-  user User @relation(fields: [idUser], references: [idUser])
-
+model Like {
+  idUser  String @map("id_user")
   idTweet String @map("id_tweet")
+
+  user  User  @relation(fields: [idUser], references: [idUser])
   tweet Tweet @relation(fields: [idTweet], references: [idTweet])
 
+  dtCriacao DateTime @default(now()) @map("dt_criacao")
+
+  @@id([idUser, idTweet])
+  @@map("like")
+}
+
+model Follow {
+  idSeguidor String @map("id_seguidor")
+  idSeguido  String @map("id_seguido")
+
+  seguidor User @relation("Following", fields: [idSeguidor], references: [idUser])
+  seguido  User @relation("Followers", fields: [idSeguido], references: [idUser])
+
+  dtCriacao DateTime @default(now()) @map("dt_criacao")
+
+  @@id([idSeguidor, idSeguido])
+  @@map("follow")
+}
+
+model Retweet {
+  idRetweet String   @id @default(uuid()) @map("id_retweet")
+  dtCriacao DateTime @default(now()) @map("dt_criacao")
+
+  idUser  String @map("id_user")
+  idTweet String @map("id_tweet")
+
+  user  User  @relation(fields: [idUser], references: [idUser])
+  tweet Tweet @relation(fields: [idTweet], references: [idTweet])
+
+  @@unique([idUser, idTweet])
   @@map("retweet")
 }
