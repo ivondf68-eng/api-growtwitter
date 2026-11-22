@@ -1,5 +1,6 @@
 
 import { prisma } from "../config/prisma.config";
+import { CreateLikeDTO } from "../dtos/like.dto";
 import { CreateTweetDTO, UpdateTweetDTO } from "../dtos/tweet.dto";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 
@@ -82,6 +83,11 @@ class GrowTwitterRepository {
         });
     }
 
+    public async createLike(data: CreateLikeDTO){
+        return await prisma.like.create({
+            data
+        });
+    }
 }
-
+    
 export const repository = new GrowTwitterRepository();
