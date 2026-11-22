@@ -2,11 +2,13 @@ import express from 'express';
 import userRoutes from './routes/user.routes';
 import tweetRoutes from './routes/tweet.routes';
 import likeRoutes from './routes/like.routes';
+import followRoutes from './routes/follow.routes';
 
 const app = express();
 app.use(express.json());
 
 app.use("/users", userRoutes);
+app.use("/users", followRoutes);
 app.use("/tweets", tweetRoutes);
 app.use("/tweets", likeRoutes);
 
