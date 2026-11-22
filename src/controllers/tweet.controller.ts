@@ -47,4 +47,38 @@ export class TweetController {
             return handleError(error, res);
         }
     }
+
+    public async update(req: Request<{ idTweet: string }>, res: Response){
+        try {
+            const { idTweet } = req.params;
+            const { mensagem } = req.body;
+
+            if(!mensagem){
+                return res.status(400).send({
+                    ok: false,
+                    message: "É obrigatório preencher o campo de mensagem"
+                })
+            }
+
+            const result = await tweetService.update(idTweet, req.body);
+
+            return res.status(result.code).send(result);
+
+        } catch(error: any){
+            return handleError(error, res);
+        }
+    }
+
+    public async delete(req: Request<{ idTweet: string }>, res: Response){
+        try {
+            const { idTweet } = req.params;
+
+            const result = await tweetService.delete(idTweet);
+
+            return res.status(result.code).send(result);
+
+        } catch(error: any){
+            return handleError(error, res);
+        }
+    }
 }
