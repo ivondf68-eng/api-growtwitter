@@ -127,6 +127,17 @@ class GrowTwitterRepository {
             }
         });
     }
+
+    public async findRepliesByTweetId(idTweetPai: string) {
+        return await prisma.tweet.findMany({
+            where: {
+                idTweetPai
+            },
+            orderBy: {
+                dtCriacao: 'asc'
+            }
+        });
+    }
 }
     
 export const repository = new GrowTwitterRepository();

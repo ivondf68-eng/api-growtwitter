@@ -36,4 +36,23 @@ class ReplyService {
             data: reply
         };
     }
+
+    public async listByTweet(idTweetPai: string) {
+        const tweetPai = await repository.findTweetById(idTweetPai);
+
+        if (!tweetPai) {
+            return {
+                code: 404,
+                message: "Tweet original não encontrado."
+            };
+        }
+
+        const replies = await repository.findRepliesByTweetId(idTweetPai);
+
+        return {
+            code: 200,
+            message: "Respostas listadas com sucesso.",
+            data: replies
+        };
+    }
 }
