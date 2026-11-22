@@ -1,5 +1,6 @@
 
 import { prisma } from "../config/prisma.config";
+import { ChaveCompostaFollowDTO, CreateFollowDTO } from "../dtos/follow.dto";
 import { ChaveCompostaLikeDTO, CreateLikeDTO } from "../dtos/like.dto";
 import { CreateTweetDTO, UpdateTweetDTO } from "../dtos/tweet.dto";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
@@ -103,6 +104,28 @@ class GrowTwitterRepository {
                 idUser_idTweet: data
             }
         })
+    }
+
+    public async createFollow(data: CreateFollowDTO) {
+        return await prisma.follow.create({
+            data
+        });
+    }
+
+    public async findFollow(data: ChaveCompostaFollowDTO) {
+        return await prisma.follow.findUnique({
+            where: {
+                idSeguidor_idSeguido: data
+            }
+        });
+    }
+
+    public async deleteFollow(data: ChaveCompostaFollowDTO) {
+        return await prisma.follow.delete({
+            where: {
+                idSeguidor_idSeguido: data
+            }
+        });
     }
 }
     
