@@ -5,6 +5,7 @@ import likeRoutes from './routes/like.routes';
 import followRoutes from './routes/follow.routes';
 import replyRoutes from './routes/reply.routes';
 import feedRoutes from './routes/feed.routes';
+import loginRoutes from './routes/login.routes';
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use("/tweets", tweetRoutes);
 app.use("/tweets", likeRoutes);
 app.use('/tweets', replyRoutes);
 app.use("/feed", feedRoutes);
+app.use("/login", loginRoutes);
 
 const port = process.env.PORT;
 
