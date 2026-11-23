@@ -1,0 +1,1 @@
+{"version":3,"file":"like.service.d.ts","sourceRoot":"","sources":["../../src/services/like.service.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,oBAAoB,EAAE,aAAa,EAAE,MAAM,kBAAkB,CAAC;AAGvE,cAAM,WAAW;IACA,MAAM,CAAC,IAAI,EAAE,aAAa;;;;;;;;;;;;;IAqC1B,MAAM,CAAC,IAAI,EAAE,oBAAoB;;;;;;;;;;;;;CAqCjD;AAED,eAAO,MAAM,WAAW,aAAoB,CAAC"}
