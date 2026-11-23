@@ -7,6 +7,10 @@ export const sessionDatabase = {
 
     findUserByLogin(login: string) {
         return sessions.get(login);
+    },
+
+    delete(login: string) {
+        return sessions.delete(login);
     }
-    
+
 };
