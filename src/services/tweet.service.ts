@@ -61,13 +61,20 @@ class TweetService {
         }
     }
 
-    public async update(idTweet: string, data: UpdateTweetDTO) {
+    public async update(idTweet: string, idUser: string, data: UpdateTweetDTO) {
         const tweet = await repository.findTweetById(idTweet);
 
         if (!tweet) {
             return {
                 code: 404,
                 message: "Tweet não encontrado.",
+            }
+        }
+
+        if(tweet.idUser !== idUser){
+            return {
+                code: 400,
+                message: "Você não tem permissão para editar este Tweet."
             }
         }
 
@@ -87,13 +94,20 @@ class TweetService {
         };
     }
 
-    public async delete(idTweet: string) {
+    public async delete(idTweet: string, idUser: string) {
         const tweet = await repository.findTweetById(idTweet);
 
         if (!tweet) {
             return {
                 code: 404,
                 message: "Tweet não encontrado.",
+            }
+        }
+
+        if(tweet.idUser !== idUser){
+            return {
+                code: 400,
+                message: "Você não tem permissão para excluir este Tweet."
             }
         }
 
