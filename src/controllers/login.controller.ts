@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { handleError } from "../config/error.handler";
 import { userService } from "../services/user.service";
+import { sessionDatabase } from "../database/session.database";
 
 
 class LoginController {
@@ -16,6 +17,22 @@ class LoginController {
             return handleError(error, res);
         }
 
+    }
+
+    public async logout(req: Request, res: Response) {
+        try {
+            const login = req.headers["login"] as string;
+
+            sessionDatabase.delete(login);  
+
+            return res.status(200).send({
+                code: 200,
+                message: "Logout realizado com sucesso."
+            });
+
+        } catch (error) {
+            return handleError(error, res);
+        }
     }
 }
 
