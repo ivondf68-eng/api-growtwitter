@@ -1,5 +1,9 @@
 import { repository } from "../database/prisma.database";
+import { LoginDTO } from "../dtos/login.dto";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
+import { randomUUID } from "crypto";
+import { sessionDatabase } from "../database/session.database";
+
 
 class UserService{
     public async create(data: CreateUserDTO){
@@ -91,6 +95,39 @@ class UserService{
             message: "Usuário deletado com sucesso",
             data: deletedUser
         }
+    }
+
+    public async login(data: LoginDTO) {
+        const user = await repository.findUserByEmail(data.email);
+
+        if (!user) {
+            return {
+                code: 404,
+                message: "Usuário não encontrado"
+            };
+        }
+
+        if (user.senha !== data.senha) {
+            return {
+                code: 400,
+                message: "Senha incorreta"
+            };
+        }
+
+        const login = randomUUID();
+
+        sessionDatabase.create(login, user.idUser);
+
+        const { senha, ...userData } = user;
+
+        return {
+            code: 200,
+            message: "Login realizado com sucesso.",
+            data: {
+                ...userData,
+                login
+            }
+        };
     }
 }
 
