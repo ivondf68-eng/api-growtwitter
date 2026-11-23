@@ -25,7 +25,6 @@ model User {
 
   tweets   Tweet[]
   likes    Like[]
-  retweets Retweet[]
 
   following Follow[] @relation("Following")
   followers Follow[] @relation("Followers")
@@ -48,7 +47,6 @@ model Tweet {
   replies    Tweet[] @relation("TweetReplies")
 
   likes    Like[]
-  retweets Retweet[]
 
   @@map("tweet")
 }
@@ -79,16 +77,3 @@ model Follow {
   @@map("follow")
 }
 
-model Retweet {
-  idRetweet String   @id @default(uuid()) @map("id_retweet")
-  dtCriacao DateTime @default(now()) @map("dt_criacao")
-
-  idUser  String @map("id_user")
-  idTweet String @map("id_tweet")
-
-  user  User  @relation(fields: [idUser], references: [idUser])
-  tweet Tweet @relation(fields: [idTweet], references: [idTweet])
-
-  @@unique([idUser, idTweet])
-  @@map("retweet")
-}
