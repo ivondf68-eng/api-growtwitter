@@ -7,7 +7,8 @@ class ReplyController {
     public async create(req: Request<{ idTweetPai: string }>, res: Response) {
         try {
             const { idTweetPai } = req.params;
-            const { mensagem, idUser } = req.body;
+            const { mensagem } = req.body;
+            const idUser = res.locals.idUser;
 
             const result = await replyService.create({
                 mensagem,

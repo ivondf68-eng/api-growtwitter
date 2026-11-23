@@ -7,7 +7,7 @@ export class FollowController {
     public async create(req: Request<{ idSeguido: string }>, res: Response) {
         try {
             const { idSeguido } = req.params;
-            const { idSeguidor } = req.body;
+            const idSeguidor = res.locals.idUser;
 
             const result = await followService.create({
                 idSeguidor,
@@ -24,7 +24,7 @@ export class FollowController {
     public async delete(req: Request<{ idSeguido: string }>, res: Response) {
         try {
             const { idSeguido } = req.params;
-            const { idSeguidor } = req.body;
+            const idSeguidor = res.locals.idUser;
 
             const result = await followService.delete({
                 idSeguidor,

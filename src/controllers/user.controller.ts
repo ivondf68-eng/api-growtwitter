@@ -7,6 +7,7 @@ export class UserController {
         try{
             const { nome, email, senha, img } = req.body;
 
+
             if(!nome || !email || !senha || !img){
                 return res.status(400).send({
                   ok: false,
@@ -36,7 +37,7 @@ export class UserController {
 
     public async findById(req: Request<{ idUser: string }>, res: Response){
         try {
-            const { idUser } = req.params;
+            const idUser = res.locals.idUser;
 
             const result = await userService.findById(idUser);
 
@@ -48,7 +49,7 @@ export class UserController {
 
     public async update(req: Request<{ idUser: string }>, res: Response){
         try {
-            const { idUser } = req.params;
+            const idUser = res.locals.idUser;
 
             const result = await userService.updateUser(idUser, req.body);
 
@@ -60,7 +61,7 @@ export class UserController {
 
     public async delete(req: Request<{ idUser: string }>, res: Response){
         try {
-            const { idUser } = req.params;
+            const idUser = res.locals.idUser;
 
             const result = await userService.deleteUser(idUser);
 

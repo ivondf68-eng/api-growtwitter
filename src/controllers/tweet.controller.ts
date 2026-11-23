@@ -7,6 +7,7 @@ export class TweetController {
     public async create(req: Request, res: Response){
         try {
             const { mensagem } = req.body;
+            const idUser = res.locals.idUser;
 
             if(!mensagem){
                 return res.status(400).send({
@@ -15,7 +16,10 @@ export class TweetController {
                 })
             }
 
-            const result = await tweetService.create(req.body);
+            const result = await tweetService.create({
+                ...req.body,
+                idUser
+            });
 
             return res.status(result.code).send(result);
 
@@ -52,6 +56,7 @@ export class TweetController {
         try {
             const { idTweet } = req.params;
             const { mensagem } = req.body;
+            const idUser = res.locals.idUser;
 
             if(!mensagem){
                 return res.status(400).send({
@@ -60,7 +65,7 @@ export class TweetController {
                 })
             }
 
-            const result = await tweetService.update(idTweet, req.body);
+            const result = await tweetService.update(idTweet, idUser, req.body);
 
             return res.status(result.code).send(result);
 
@@ -72,8 +77,9 @@ export class TweetController {
     public async delete(req: Request<{ idTweet: string }>, res: Response){
         try {
             const { idTweet } = req.params;
+            const idUser = res.locals.idUser;
 
-            const result = await tweetService.delete(idTweet);
+            const result = await tweetService.delete(idTweet, idUser);
 
             return res.status(result.code).send(result);
 

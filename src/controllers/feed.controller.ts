@@ -6,8 +6,8 @@ import { handleError } from "../config/error.handler";
 class FeedController {
     public async list(req: Request<{ idUser: string }>, res: Response) {
         try {
-            const { idUser } = req.params;
-
+            const idUser = res.locals.idUser;
+        
             const result = await feedService.list(idUser);
 
             return res.status(result.code).send(result);
