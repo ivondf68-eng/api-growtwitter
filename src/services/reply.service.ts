@@ -56,3 +56,5 @@ class ReplyService {
         };
     }
 }
+
+export const replyService = new ReplyService();
