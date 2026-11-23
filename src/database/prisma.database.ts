@@ -145,6 +145,32 @@ class GrowTwitterRepository {
             }
         });
     }
+
+    public async listFeed(idUser: string) {
+        const following = await prisma.follow.findMany({
+            where: {
+                idSeguidor: idUser
+            },
+            select: {
+                idSeguido: true
+            }
+        })
+
+        return await prisma.tweet.findMany({
+            where: {
+                idTweetPai: null,
+                idUser: {
+                    in: [idUser, ...following.map(follow => follow.idSeguido)]
+                }
+            },
+            include: {
+                replies: true
+            },
+            orderBy: {
+                dtCriacao: 'desc'
+            }
+        })
+    }
 }
     
 export const repository = new GrowTwitterRepository();
