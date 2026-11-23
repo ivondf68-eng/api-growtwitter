@@ -56,7 +56,14 @@ class GrowTwitterRepository {
     }
 
     public async listTweets() {
-        return await prisma.tweet.findMany();
+        return await prisma.tweet.findMany({
+            where: {
+                idTweetPai: null
+            },
+            include: {
+                replies: true
+            }
+        });
     }
 
     public async findTweetById(idTweet: string) {
